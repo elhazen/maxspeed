@@ -195,7 +195,19 @@ predict_maxspeed <- function(mass_kg, mod) {
 
 6.  Commit your changes and push to GitHub.
 
-### 6. Wrapping up
+### 6. Add citations and cross-references
+
+The latest version of RStudio has a visual editing mode that automates many of the most tedious technical writing tasks, like tracking citations and cross-referencing figures.
+
+1.  Change your citation style to Nature, to match Hirt et al. (2017). Download the Nature [Citation Style Language](https://citationstyles.org/authors/) (CSL) file from the official CSL repository on GitHub ([link](https://github.com/citation-style-language/styles/blob/master/nature.csl)). This file makes your citations and bibliography match Nature's preferences. Put the file in analysis/templates. Then, update your paper.Rmd YAML header to use the new CSL file. Around line 25, you should see `csl: "../templates/journal-of-archaeological-science.csl"`. Change `journal-of-archaeological-science` to `nature`.
+2.  Add a citation. Switch to [visual editing mode](https://rstudio.github.io/visual-markdown-editing/) and delete the default bib file (analysis/paper/references.bib). In the `# Introduction` there should be a line that says `Here is a citation [@Marwick2017]` (around line 60). Erase that and replace it with `This is a replication of figure 2A from`. Now we're going to add a citation to Hirt et al. (2017). At the end of the sentence you just added, type `[@` . This should bring up a prompt that says "\|magnifying glass\| or DOI". Paste the DOI for Hirt et al. (2017): 10.1038/s41559-017-0241-4. That should launch a dialog with the bibliographic information. Hit OK. Your citation should now look like `[@hirt2017]` .
+3.  Have a look at the result. Open analysis/paper/references.bib and you should see the bib entry for Hirt et al. (2017). Switch back to paper.Rmd and knit the document. In Word, at the beginning of the introduction (line 10), you'll see Hirt et al. (2017) cited. Scroll down to the references section and you'll see the full bibliographic entry (should be on line 25). Well done! For more information on citations in Rmd documents, see [here](https://rstudio.github.io/visual-markdown-editing/citations.html).
+4.  Commit your changes!
+5.  Now let's cross-reference the figure. First, you'll need to add a caption. Find the R chunk with the figure code. It should have the chunk label `fig2a` (i.e., it starts with `{r fig2a}`. Add a caption with the `fig.cap` option (e.g., `{r fig2a, fig.cap="Replication of figure 2a from [@hirt2017]"})`. Knit the document and check out the caption below the figure.
+6.  Now that the figure has a caption, it's available for cross-reference. Scroll back to the Introduction in the Rmd file. At the end of the sentence starting with "This is a...", type `(Fig. @ref(fig`. You should see an autocomplete box; hit enter or return to accept the first option, which should be `fig:fig2a`. Add any necessary punctuation so the sentence make sense, then knit. You should now see your figure properly cross-referenced! More information about cross-referencing for other types of objects (e.g., tables, equations) is available [here](https://rstudio.github.io/visual-markdown-editing/technical.html#cross-references) and [here](https://bookdown.org/yihui/bookdown/cross-references.html).
+7.  Commit your changes and push to GitHub.
+
+### 7. Wrapping up
 
 1.  Update the DESCRIPTION file. Read [Chapter 8](https://r-pkgs.org/description.html) of the R packages book and update all the fields you can (Title, Description, etc).
 2.  Add a license. Read [Chapter 9](https://r-pkgs.org/license.html) of the R packages book and add an MIT license.
@@ -203,4 +215,4 @@ predict_maxspeed <- function(mass_kg, mod) {
 4.  Update analysis/paper/paper.Rmd. Add your information to the YAML header (the first 30ish lines, with `---` before and after it). Remove the boilerplate R code chunks. Knit to update the Word document.
 5.  Commit and push.
 6.  Open an issue in FlukeAndFeather/maxspeed with a link to your repo. The instructors will leave feedback for you in that issue.
-7.  Read Marwick et al. (2017) for a more in depth look at the research compendium framework for sharing code and data with your manuscript. Compare your research compendium to the levels of complexity described in the paper. 
+7.  Read Marwick et al. (2017) for a more in depth look at the research compendium framework for sharing code and data with your manuscript. Compare your research compendium to the levels of complexity described in the paper.
