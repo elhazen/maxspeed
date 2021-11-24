@@ -203,3 +203,4 @@ predict_maxspeed <- function(mass_kg, mod) {
 4.  Update analysis/paper/paper.Rmd. Add your information to the YAML header (the first 30ish lines, with `---` before and after it). Remove the boilerplate R code chunks. Knit to update the Word document.
 5.  Commit and push.
 6.  Open an issue in FlukeAndFeather/maxspeed with a link to your repo. The instructors will leave feedback for you in that issue.
+7.  Read Marwick et al. (2017) for a more in depth look at the research compendium framework for sharing code and data with your manuscript. Compare your research compendium to the levels of complexity described in the paper. 
