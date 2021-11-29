@@ -1,9 +1,9 @@
 ---
-title: "Title Goes Here"
+title: "Elliott is Awesome"
 author:
-  - Myfirstname Mylastname:
-      email: fl@oneplace.edu
-      institute: [UofO]
+  - Elliott Hazen:
+      email: ehazen@stanford.edu
+      institute: [Stanford]
       correspondence: true
   - Yourfirstname Yourlastname:
       email: fl@another.edu
@@ -65,11 +65,56 @@ Here is a citation [@Marwick2017]
 
 # Results
 
+```{r load}
+        library(maxspeed)   # Cmd-shift-B
+        library(dplyr)
+        library(ggplot2)
+        maxspeed <- readRDS("../data/derived_data/maxspeed.RDS")
+```
+
+```{r function}
+#' Fit time-dependent maximum speed model
+#'
+#' @param dat `[data.frame]` Subset of the maximum speed database. Requires columns `max_spd_kmh` and `mass_kg`.
+#'
+#' @return `[nls]` A fitted non-linear regression model.
+#' @export
+fit_maxspeed <- function(dat) {
+  # Numerical methods sometimes fail to fit the model, so just keep trying until
+  # it works
+  tryCatch({
+    stats::nls(
+      formula = max_spd_kmh ~ a * mass_kg^b * (1 - exp(-h * mass_kg^i)),
+      data = dat,
+      start = list(a = runif(1, 11.2 - 0.91, 142.8 + 16.7),
+                   b = runif(1, 0.24 - 0.01, 0.36 + 0.02),
+                   h = runif(1, 2.4 - 1.4, 19.5 + 13.6),
+                   i = runif(1, -0.72 - 0.26, -0.56 + 0.07))
+    )},
+    error = function(e) fit_maxspeed(dat)
+  )
+}
+
+
+#' Maximum speed predictions
+#'
+#' @param mass_kg `[numeric]` Mass of animals for model prediction (in kg)
+#' @param mod `[nls]` A fitted time-dependent maximum speed model (see `fit_maxspeed()`)
+#'
+#' @return `[numeric]` Predicted maximum speeds for animals of size `mass_kg`
+#' @export
+predict_maxspeed <- function(mass_kg, mod) {
+  stats::predict(mod, newdata = data.frame(mass_kg = mass_kg))
+}
+
+```
+
+
 <!-- Here's some example analysis code: -->
 
 ```{r get-data, eval = FALSE}
 # Note the path that we need to use to access our data files when rendering this document
-my_data <- read.csv(here::here('analysis/data/raw_data/my_csv_file.csv'))
+####  my_data <- read.csv(here::here('analysis/data/raw_data/my_csv_file.csv'))
 ```
 
 ```{r demo-plot, fig.cap="A plot of random numbers"}
@@ -84,6 +129,68 @@ x <- round(pi, 2)
 
 Here is an example of inline code `r x` in the middle of a sentence. 
 
+# Figure 2a
+
+```{r fig2a}
+        palette <- list(green = "#83CE3D",
+                        orange = "#E39F2F",
+                        blue = "#5F9FA1")
+
+        fly_dat <- filter(maxspeed, locomotion == "flying")
+        fly_model <- fit_maxspeed(fly_dat)
+        fly_spd <- tibble(
+          mass_kg = seq(min(fly_dat$mass_kg), max(fly_dat$mass_kg), length.out = 1000),
+          max_spd_kmh = predict_maxspeed(mass_kg, fly_model)
+        )
+
+        run_dat <- filter(maxspeed, locomotion == "running")
+        run_model <- fit_maxspeed(run_dat)
+        run_spd <- tibble(
+          mass_kg = seq(min(run_dat$mass_kg), max(run_dat$mass_kg), length.out = 1000),
+          max_spd_kmh = predict_maxspeed(mass_kg, run_model)
+        )
+
+        swm_dat <- filter(maxspeed, locomotion == "swimming")
+        swm_model <- fit_maxspeed(swm_dat)
+        swm_spd <- tibble(
+          mass_kg = seq(min(swm_dat$mass_kg), max(swm_dat$mass_kg), length.out = 1000),
+          max_spd_kmh = predict_maxspeed(mass_kg, swm_model)
+        )
+
+        ggplot(fly_dat, aes(x = mass_kg, y = max_spd_kmh)) +
+          geom_point(color = palette$green, size = 0.5, shape = 15) +
+          geom_point(data = run_dat, color = palette$orange, size = 0.5, shape = 16) +
+          geom_point(data = swm_dat, color = palette$blue, size = 0.5, shape = 17) +
+          geom_line(data = fly_spd, 
+                    color = palette$green, 
+                    size = 1.25) +
+          geom_line(data = fly_spd, 
+                    color = "white", 
+                    size = 0.5) +
+          geom_line(data = run_spd, 
+                    color = palette$orange, 
+                    size = 1.25) +
+          geom_line(data = run_spd, 
+                    color = "white", 
+                    size = 0.5) +
+          geom_line(data = swm_spd, 
+                    color = palette$blue, 
+                    size = 1.25) +
+          geom_line(data = swm_spd, 
+                    color = "white", 
+                    size = 0.5) +
+          scale_x_log10("Body mass (kg)",
+                        limits = 10^c(-10, 7),
+                        breaks = 10^c(-10, -6, -2, 1, 4, 7),
+                        labels = scales::trans_format("log10", scales::math_format(10^.x))) +
+          scale_y_log10(bquote(Speed~(km~h^-1)),
+                        limits = 10^c(-2, 3),
+                        breaks = 10^(-2:3),
+                        labels = c("0.01", "0.1", "1", "10", "100", "1,000")) +
+          annotation_logticks() +
+          theme_classic() +
+          theme(aspect.ratio = 1)
+```
 # Discussion
 
 # Conclusion

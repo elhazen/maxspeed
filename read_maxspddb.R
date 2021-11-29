@@ -11,3 +11,6 @@ readxl::read_excel("analysis/data/raw_data/maxspeeddatabase.xlsx") %>%
                 speed_ref = `speed ref.`,
                 diet = `primary diet`) %>%
   saveRDS("analysis/data/derived_data/maxspeed.RDS")
+
+use_r("speed_model")
+
