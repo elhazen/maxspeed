@@ -22,7 +22,7 @@ output:
       - --lua-filter=../templates/author-info-blocks.lua
       - --lua-filter=../templates/pagebreak.lua
 bibliography: references.bib
-csl: "../templates/journal-of-archaeological-science.csl" # Insert path for the bib-style
+csl: "../templates/nature.csl" # Insert path for the bib-style
 abstract: |
   Text of abstract
 keywords: |
