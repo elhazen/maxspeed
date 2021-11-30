@@ -1,9 +1,9 @@
 Package: maxspeed
-Title: What the Package Does (One Line, Title Case)
+Title: Reproduces MaxSpeed calculations from Hirt et l. 2017
 Version: 0.0.0.9000
 Authors@R:
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"))
-Description: What the package does (one paragraph).
+    person("Elliott", "Hazen", , "ehazen@stanford.edu", role = c("aut", "cre"))
+Description: Speed is the fundamental constraint on animal movement, yet there is no general consensus on the determinants of maximum speed itself. Here, we provide a general scaling model of maximum speed with body mass, which holds across locomotion modes, ecosystem types and taxonomic groups. In contrast to traditional power-law scaling, we predict a hump-shaped relationship resulting from a finite acceleration time for animals, which explains why the largest animals are not the fastest. This model is strongly supported by extensive empirical data (474 species, with body masses ranging from 30 μg to 100 tonnes) from terrestrial as well as aquatic ecosystems. Our approach unravels a fundamental constraint on the upper limit of animal movement, thus enabling a better understanding of realized movement patterns in nature and their multifold ecological consequences.
 License: MIT + file LICENSE
 ByteCompile: true
 Encoding: UTF-8
